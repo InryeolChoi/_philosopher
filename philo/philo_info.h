@@ -20,10 +20,10 @@ typedef struct  s_box
     int             finish;
     int             flag;
     pthread_mutex_t *fork;
-    pthread_mutex_t *a;
-    pthread_mutex_t *b;
-    pthread_mutex_t *c;
-    pthread_mutex_t *d;
+    pthread_mutex_t *print;
+    pthread_mutex_t *monitor;
+    pthread_mutex_t *eat_times;
+    pthread_mutex_t *last_eat;
 }   t_box;
 
 typedef struct  s_philo
