@@ -91,4 +91,5 @@ int main(int ac, char **av)
     if (!philo)
         return (1);
     philo_execute(tools, philo);
+    philo_free(tools, philo);
 }

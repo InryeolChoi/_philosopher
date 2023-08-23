@@ -53,7 +53,7 @@ void    *fail_alloc_philo(t_philo **philo, int num)
     return (NULL);
 }
 
-void    *philo_free(t_philo **philo, t_box *tools)
+void    philo_free(t_box *tools, t_philo **philo)
 {
     int i;
 
