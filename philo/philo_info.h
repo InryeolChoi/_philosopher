@@ -2,11 +2,13 @@
 # define PHILO_INFO_H
 
 # include <pthread.h>
-# include <stdio.h>
 # include <string.h>
+# include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
 # include <sys/time.h>
+
+# define INT_MAX 2147483647
 
 typedef struct  s_box
 {
@@ -37,7 +39,8 @@ typedef struct  s_philo
 }   t_philo;
 
 
-int ft_atoi(char *str);
-int ft_error(char *str);
+int     ft_atoi(char *str);
+int     ft_error(char *str);
+void    philo_execute(t_box *tools, t_philo **philo);
 
 #endif

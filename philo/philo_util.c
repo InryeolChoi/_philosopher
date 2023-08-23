@@ -41,3 +41,14 @@ int ft_error(char *str)
     printf("%s", str);
     return (1);
 }
+
+int fail_alloc_philo(t_philo **philo, int num)
+{
+    int i;
+
+    i = 0;
+    while (i < num)
+        free(philo[i++]);
+    free(philo);
+    return (0);
+}
