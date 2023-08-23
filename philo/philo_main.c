@@ -79,6 +79,7 @@ static t_philo **set_philo(t_box *tools)
 
 int main(int ac, char **av)
 {
+    int     res;
     t_box   *tools;
     t_philo **philo;
 
@@ -90,6 +91,7 @@ int main(int ac, char **av)
     philo = set_philo(tools);
     if (!philo)
         return (1);
-    philo_execute(tools, philo);
+    res = philo_execute(tools, philo);
     philo_free(tools, philo);
+    return (res);
 }
