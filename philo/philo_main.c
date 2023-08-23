@@ -90,5 +90,5 @@ int main(int ac, char **av)
     philo = set_philo(tools);
     if (!philo)
         return (1);
-    // philo_execute(tools, philo);
+    philo_execute(tools, philo);
 }

@@ -41,6 +41,7 @@ typedef struct  s_philo
 
 int     ft_atoi(char *str);
 int     ft_error(char *str);
+void    *fail_alloc_philo(t_philo **philo, int num);
 void    philo_execute(t_box *tools, t_philo **philo);
 
 #endif
