@@ -51,6 +51,15 @@ static t_box    *set_tools(int ac, char **av)
     return (tools);
 }
 
+static void set_mutex(t_box *tools)
+{
+    while ()
+    {
+        tools->fork = malloc(sizeof(pthread_mutex_t));
+        
+    }
+}
+
 static t_philo **set_philo(t_box *tools)
 {
     int     i;
