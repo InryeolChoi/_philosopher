@@ -8,9 +8,6 @@
 # include <unistd.h>
 # include <sys/time.h>
 
-# define LONG_MAX 9223372036854775807
-# define LONG_MIN -9223372036854775808
-
 typedef struct  s_box
 {
     int             philo_num;

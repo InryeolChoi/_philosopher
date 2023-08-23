@@ -18,12 +18,12 @@ static int  set_tools(t_box **tools, int ac, char **av)
     else
         (*tools)->eating_num = 0;
     (*tools)->flag = 0;
+    return (0);
 }
 
 t_philo **set_philo(t_philo **philo, t_box *tools)
 {
-    int     i;
-    t_philo **philo;
+    int i;
 
     i = 0;
     while (i < tools->philo_num)
