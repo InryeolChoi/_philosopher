@@ -2,4 +2,5 @@
 
 void    philo_execute(t_box *tools, t_philo **philo)
 {
+    
 }
