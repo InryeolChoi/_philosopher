@@ -31,7 +31,7 @@
 // }
 
 
-int philo_execute(t_box *tools, t_philo **philo)
+int philo_execute(t_box *tools, t_philo *philo)
 {
     int i;
 
@@ -40,4 +40,30 @@ int philo_execute(t_box *tools, t_philo **philo)
     {
         i++;
     }
+}
+
+
+void    philo_eat()
+{
+
+}
+
+void    philo_print()
+{
+
+}
+
+void    philo_sleep()
+{
+
+}
+
+void    philo_think()
+{
+
+}
+
+void    philo_death()
+{
+    
 }
