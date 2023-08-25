@@ -51,6 +51,17 @@ void    philo_free(t_box *tools)
         pthread_mutex_destory(&tools->fork[i++]);
     free(tools->fork);
     free(tools->philo);
-    pthread_mutex_destroy(&tools->eating);
     pthread_mutex_destroy(&tools->write);
+}
+
+void    thread_print(t_philo *thread, char *str)
+{
+    t_box   *tools;
+
+    tools = thread->tools;
+    pthread_mutex_lock(&tools->write);
+    printf("%lld ", thread->clock);
+    printf("%s ", thread->id);
+    printf("%s", str);
+    pthread_mutex_unlock(&tools->write);
 }

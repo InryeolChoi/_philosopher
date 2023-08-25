@@ -58,7 +58,7 @@ static int  set_philo(t_box *tools)
         tools->philo[i].left_fork = i;
         tools->philo[i].right_fork = (i + 1) % tools->philo_num;
         tools->philo[i].eat_count = 0;
-        tools->philo[i].last_time = 0;
+        tools->philo[i].clock = 0;
         tools->philo[i].tools = tools;
         i++;
     }
