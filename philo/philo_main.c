@@ -7,7 +7,7 @@ static int  check_av(int ac, char **av)
 
     i = 1;
     if (ac < 5 || ac > 6)
-        return (0);
+        return (1);
     while (i < ac)
     {
         x = 0;
@@ -20,11 +20,9 @@ static int  check_av(int ac, char **av)
         i++;
     }
     return (0);
-}
-
+}c
 int main(int ac, char **av)
 {
-    int     res;
     t_box   tools;
 
     if (check_av(ac, av))

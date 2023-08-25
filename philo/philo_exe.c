@@ -30,16 +30,14 @@
 //     return (0);
 // }
 
-
 int philo_execute(t_box *tools, t_philo *philo)
 {
     int i;
 
     i = 0;
     while (i < tools->philo_num)
-    {
-        i++;
-    }
+        printf("%d ", philo[i++].id);
+    return (0);
 }
 
 

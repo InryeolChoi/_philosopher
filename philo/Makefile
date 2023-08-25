@@ -1,7 +1,8 @@
 NAME = philo
 CC = cc -g -Wall -Wextra -Werror
 
-SRCS = philo_main.c philo_util.c philo_exe.c
+SRCS = philo_main.c philo_util.c philo_exe.c \
+		philo_input.c
 OBJS = $(SRCS:.c=.o)
 
 all : $(NAME)

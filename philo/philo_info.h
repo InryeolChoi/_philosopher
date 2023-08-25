@@ -31,8 +31,8 @@ typedef struct  s_box
     int             finish;
     int             flag;
     t_philo         *philo;
-    t_philo         eating;
-    t_philo         write;
+    pthread_mutex_t eating;
+    pthread_mutex_t write;
     pthread_mutex_t *fork;
 }   t_box;
 
@@ -40,6 +40,7 @@ typedef struct  s_box
 int     ft_atoi(char *str);
 int     ft_error(char *str);
 void    philo_free(t_box *tools);
-int     set_input(t_box *tools, int ac, char **av);
+int     philo_input(t_box *tools, int ac, char **av);
+int     philo_execute(t_box *tools, t_philo *philo);
 
 #endif

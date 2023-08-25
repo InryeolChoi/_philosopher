@@ -45,18 +45,19 @@ static int  set_mutex(t_box *tools)
     return (0);
 }
 
-static int  *set_philo(t_box *tools)
+static int  set_philo(t_box *tools)
 {
     int i;
 
     tools->philo = malloc(sizeof(t_philo) * tools->philo_num);
     if (!tools->philo)
         return (1);
+    i = 0;
     while (i < tools->philo_num)
     {
         tools->philo[i].id = i;
         tools->philo[i].left_fork = i;
-        tools->philo[i].right_fork = (i + 1 ) % tools->philo_num;
+        tools->philo[i].right_fork = (i + 1) % tools->philo_num;
         tools->philo[i].eat_count = 0;
         tools->philo[i].last_time = 0;
         tools->philo[i].tools = tools;
@@ -65,13 +66,13 @@ static int  *set_philo(t_box *tools)
     return (0);
 }
 
-static int  set_input(t_box *tools, int ac, char **av)
+int  philo_input(t_box *tools, int ac, char **av)
 {
-    if (!set_tools(tools, ac, av))
+    if (set_tools(tools, ac, av))
         return (1);
-    if (!set_mutex(tools))
+    if (set_mutex(tools))
         return (1);
-    if (!set_philo(tools))
+    if (set_philo(tools))
         return (1);
     return (0);
 }
