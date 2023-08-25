@@ -1,22 +1,29 @@
 #include "philo_info.h"
 
-int thread_eat(t_philo *philo, t_box *tools)
+int thread_eat(t_philo *philo)
 {
-    pthread_mutex_lock(philo->left_fork);
+    int     left;
+    int     right;
+    t_box   *tools;
+
+    tools = philo->tools;
+    left = philo->left_fork;
+    right = philo->right_fork;
+    pthread_mutex_lock(&tools->fork[left]);
     thread_print(philo, "has taken a fork");
-    pthread_mutex_lock(philo->right_fork);
+    pthread_mutex_lock(&tools->fork[right]);
     thread_print(philo, "has taken a fork");
     pthread_mutex_lock(&tools->eating);
     thread_print(philo, "is eating");
     philo->clock = get_time();
     philo->eat_count += 1;
     pthread_mutex_unlock(&tools->eating);
-    pthread_mutex_unlock(philo->right_fork);
-    pthread_mutex_unlock(philo->left_fork);
+    pthread_mutex_unlock(&tools->fork[right]);
+    pthread_mutex_unlock(&tools->fork[left]);
     return (0);
 }
 
-int thread_sleep(t_philo *philo, t_box *tools)
+int thread_sleep(t_philo *philo)
 {
     thread_print(philo, "is sleeping");
     philo->clock = get_time();
@@ -35,8 +42,8 @@ void    *threads_action(void *arg)
         usleep(100);
     while (i < tools->philo_num)
     {
-        thread_eat(thread, tools);
-        thread_sleep(thread, tools);
+        thread_eat(thread);
+        thread_sleep(thread);
         philo_print(thread, "is thinking");
     }
     return (arg);
