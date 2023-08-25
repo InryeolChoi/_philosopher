@@ -20,7 +20,7 @@ static int  check_av(int ac, char **av)
         i++;
     }
     return (0);
-}c
+}
 int main(int ac, char **av)
 {
     t_box   tools;
