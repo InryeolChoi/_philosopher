@@ -44,6 +44,13 @@ int ft_error(char *str)
 
 void    philo_free(t_box *tools)
 {
+    int i;
+
+    i = 0;
+    while (i < tools->philo_num)
+        pthread_mutex_destory(&tools->fork[i++]);
     free(tools->fork);
     free(tools->philo);
+    pthread_mutex_destroy(&tools->eating);
+    pthread_mutex_destroy(&tools->write);
 }

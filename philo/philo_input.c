@@ -20,7 +20,6 @@ static int  set_tools(t_box *tools, int ac, char **av)
     }
     else
         tools->eating_num = -1;
-    tools->flag = 0;
     return (0);
 }
 

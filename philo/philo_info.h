@@ -28,8 +28,6 @@ typedef struct  s_box
     int             eating_time;
     int             sleep_time;
     int             eating_num;
-    int             finish;
-    int             flag;
     t_philo         *philo;
     pthread_mutex_t eating;
     pthread_mutex_t write;

@@ -1,67 +1,46 @@
 #include "philo_info.h"
 
-// void    *ft_eat(void *arg)
-// {
-//     t_box   *tools;
+int thread_eat(t_philo *philo, t_box *tools)
+{
+    pthread_mutex_lock();
+    pthread_mutex_lock();
 
-//     tools = (t_box *)arg;
-//     pthread_mutex_lock(tools->fork);
-//     for (int i = 0; i < 100; i++)
-//         printf("%d ", i);
-//     pthread_mutex_unlock(tools->fork);
-//     return (arg);
-// }
+    pthread_mutex_unlock();
+    pthread_mutex_unlock();
+}
 
-// int philo_execute(t_box *tools, t_philo **philo)
-// {
-//     int i;
+void    *threads_action(void *arg)
+{
+    int     i;
+    t_box   *tools;
+    t_philo *philo;
 
-//     i = 0;
-//     tools->fork = malloc(sizeof(pthread_mutex_t) * tools->philo_num);
-//     if (!tools->fork)
-//         return (1);
-//     pthread_mutex_init(tools->fork, NULL);
-//     while (i < tools->philo_num)
-//         pthread_create(&philo[i++]->thread_id, NULL, ft_eat, (void *)tools);
-//     i = 0;
-//     while (i < tools->philo_num)
-//         pthread_join(philo[i++]->thread_id, NULL);
-//     free(tools->fork);
-//     return (0);
-// }
+    philo = (t_philo *)arg;
+    tools = philo->tools;
+    i = 0;
+    while (i < tools->philo_num)
+    {
+        thread_eat(philo, tools);
+        thread_sleep();
+        thread_think();
+    }
+    return (arg);
+}
+
 
 int philo_execute(t_box *tools, t_philo *philo)
 {
-    int i;
+    int     i;
+    void    *select;
 
     i = 0;
     while (i < tools->philo_num)
-        printf("%d ", philo[i++].id);
-    return (0);
-}
-
-
-void    philo_eat()
-{
-
-}
-
-void    philo_print()
-{
-
-}
-
-void    philo_sleep()
-{
-
-}
-
-void    philo_think()
-{
-
-}
-
-void    philo_death()
-{
-    
+    {
+        philo[i].last_time = get_time();
+        select = (void *)&(philo[i]);
+        if (pthread_create(&(philo[i].thread_id), NULL, threads_action, select));
+            return (-1);
+        i++;
+    }
+    philo_free(tools);
 }
