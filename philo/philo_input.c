@@ -26,17 +26,43 @@ static int  set_tools(t_box *tools, int ac, char **av)
 
 static int  set_mutex(t_box *tools)
 {
+    int i;
 
-    tools->philo = (t_philo *)malloc(sizeof(t_philo) * tools->philo_num);
-    if (!tools->philo)
+    if (pthread_mutex_init(&(tools->eating), NULL))
         return (1);
+    if (pthread_mutex_init(&(tools->write), NULL))
+        return (1);
+    tools->fork = malloc(sizeof(pthread_mutex_t) * tools->philo_num);
+    if (!(tools->fork))
+        return (1);
+    i = 0;
+    while (i < tools->philo_num)
+    {
+        if (pthread_mutex_init(&(tools->fork[i]), NULL))
+            return (1);
+        i++;
+    }
     return (0);
 }
 
-
 static int  *set_philo(t_box *tools)
 {
+    int i;
 
+    tools->philo = malloc(sizeof(t_philo) * tools->philo_num);
+    if (!tools->philo)
+        return (1);
+    while (i < tools->philo_num)
+    {
+        tools->philo[i].id = i;
+        tools->philo[i].left_fork = i;
+        tools->philo[i].right_fork = (i + 1 ) % tools->philo_num;
+        tools->philo[i].eat_count = 0;
+        tools->philo[i].last_time = 0;
+        tools->philo[i].tools = tools;
+        i++;
+    }
+    return (0);
 }
 
 static int  set_input(t_box *tools, int ac, char **av)

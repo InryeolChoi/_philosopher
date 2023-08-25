@@ -42,23 +42,8 @@ int ft_error(char *str)
     return (1);
 }
 
-void    *fail_alloc_philo(t_philo **philo, int num)
+void    philo_free(t_box *tools)
 {
-    int i;
-
-    i = 0;
-    while (i < num && philo[i])
-        free(philo[i++]);
-    free(philo);
-    return (NULL);
-}
-
-void    philo_free(t_box *tools, t_philo **philo)
-{
-    int i;
-
-    i = 0;
-    while (i < tools->philo_num)
-        free(philo[i++]);
-    free(philo);
+    free(tools->fork);
+    free(tools->philo);
 }

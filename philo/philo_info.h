@@ -12,13 +12,13 @@
 
 typedef struct  s_philo
 {
-    int         id;
-    int         eat_count;
-    int         left;
-    int         right;
-    long        last_eat; 
-    long        last_time;
-    pthread_t   thread_id;
+    int             id;
+    int             left_fork;
+    int             right_fork;
+    int             eat_count;
+    long long       last_time;
+    struct s_box    *tools;
+    pthread_t       thread_id;
 }   t_philo;
 
 typedef struct  s_box
@@ -31,20 +31,15 @@ typedef struct  s_box
     int             finish;
     int             flag;
     t_philo         *philo;
+    t_philo         eating;
+    t_philo         write;
     pthread_mutex_t *fork;
-    pthread_mutex_t *print;
-    pthread_mutex_t *monitor;
-    pthread_mutex_t *eat_times;
-    pthread_mutex_t *last_eat;
 }   t_box;
-
 
 
 int     ft_atoi(char *str);
 int     ft_error(char *str);
-void    *fail_alloc_philo(t_philo **philo, int num);
+void    philo_free(t_box *tools);
 int     set_input(t_box *tools, int ac, char **av);
-int     philo_execute(t_box *tools, t_philo **philo);
-void    philo_free(t_box *tools, t_philo **philo);
 
 #endif
