@@ -30,6 +30,7 @@ typedef struct  s_box
     int             eating_num;
     t_philo         *philo;
     pthread_mutex_t *fork;
+    pthread_mutex_t eating;
     pthread_mutex_t write;
 }   t_box;
 
@@ -40,5 +41,5 @@ void    philo_free(t_box *tools);
 int     philo_input(t_box *tools, int ac, char **av);
 int     philo_execute(t_box *tools, t_philo *philo);
 void    thread_print(t_philo *thread, char *str);
-
+long    get_time(void);
 #endif

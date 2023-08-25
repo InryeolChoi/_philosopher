@@ -2,8 +2,8 @@
 
 static int  check_av(int ac, char **av)
 {
-    int     i;
-    int     x;
+    int i;
+    int x;
 
     i = 1;
     if (ac < 5 || ac > 6)
@@ -21,6 +21,7 @@ static int  check_av(int ac, char **av)
     }
     return (0);
 }
+
 int main(int ac, char **av)
 {
     t_box   tools;

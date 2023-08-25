@@ -6,11 +6,13 @@ int thread_eat(t_philo *philo, t_box *tools)
     thread_print(philo, "has taken a fork");
     pthread_mutex_lock(philo->right_fork);
     thread_print(philo, "has taken a fork");
+    pthread_mutex_lock(&tools->eating);
     thread_print(philo, "is eating");
     philo->clock = get_time();
     philo->eat_count += 1;
-    pthread_mutex_unlock(philo->left_fork);
+    pthread_mutex_unlock(&tools->eating);
     pthread_mutex_unlock(philo->right_fork);
+    pthread_mutex_unlock(philo->left_fork);
     return (0);
 }
 
@@ -35,7 +37,7 @@ void    *threads_action(void *arg)
     {
         thread_eat(thread, tools);
         thread_sleep(thread, tools);
-        thread_think(thread, tools);
+        philo_print(thread, "is thinking");
     }
     return (arg);
 }
