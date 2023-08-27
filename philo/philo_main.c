@@ -1,5 +1,11 @@
 #include "philo_info.h"
 
+int ft_error(char *str)
+{
+    printf("%s", str);
+    return (1);
+}
+
 static int  check_av(int ac, char **av)
 {
     int i;

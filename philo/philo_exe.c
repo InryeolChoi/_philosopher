@@ -7,13 +7,15 @@ static int  thread_eat(t_philo *philo, t_box *tools)
 
     pthread_mutex_lock(&tools->fork[philo->left]);
     thread_print(philo, "has taken a fork");
+    if (tools->total_num == 1)
+        return (one_philo(tools));
     pthread_mutex_lock(&tools->fork[philo->right]);
     thread_print(philo, "has taken a fork");
-    pthread_mutex_lock(&tools->eating);
+    pthread_mutex_lock(&tools->eating_mutex);
     thread_print(philo, "is eating");
-    (philo->eat_count)++;
+    (philo->philo_eat)++;
     philo->last_eat = get_time();
-    pthread_mutex_unlock(&tools->eating);
+    pthread_mutex_unlock(&tools->eating_mutex);
     pthread_mutex_unlock(&tools->fork[philo->right]);
     pthread_mutex_unlock(&tools->fork[philo->left]);
     eat_start = get_time();
@@ -69,44 +71,16 @@ static void    *threads_action(void *arg)
     return (arg);
 }
 
-void    philo_monitor(t_box *tools, t_philo *philo)
-{
-    int     i;
-    long    cur_time;
-
-    i = 0;
-    while (!check_died(tools))
-    {
-        if (tools->eating_num != 0 && philo[i].eat_count == tools->eating_num)
-        {
-            change_monitor(tools);
-            break ;
-        }
-        while (i < tools->philo_num)
-        {
-            cur_time = get_time();
-            if (cur_time - philo[i].last_eat > tools->survival_time)
-            {
-                thread_print(&philo[i], "died");
-                change_monitor(philo->tools);
-                break ;
-            }
-            i++;
-        }
-        usleep(10);
-    }
-}
-
 int philo_execute(t_box *tools, t_philo *philo)
 {
     int     i;
     void    *select;
 
     i = 0;
-    tools->begin_time = get_time();
-    while (i < tools->philo_num)
+    tools->init_point = get_time();
+    while (i < tools->total_num)
     {
-        philo[i].begin_time = get_time();
+        philo[i].philo_begin = get_time();
         select = (void *)&(philo[i]);
         if (pthread_create(&(philo[i].thread_id), NULL, threads_action, select))
             return (1);

@@ -8,25 +8,29 @@ long    get_time(void)
     return ((time.tv_sec * (unsigned long)1000) + (time.tv_usec / 1000));
 }
 
-int check_died(t_box *tools)
+int one_philo(t_box *tools)
 {
-    pthread_mutex_lock(&tools->monitor_check);
-    if (tools->monitor == 1)
-    {
-        pthread_mutex_unlock(&tools->monitor_check);
-        return (1);
-    }
-    else
-    {
-        pthread_mutex_unlock(&tools->monitor_check);
-        return (0);
-    }
+    pthread_mutex_unlock(&tools->eating_mutex);
+    usleep(tools->sleep_time * 2);
 }
 
-void    change_monitor(t_box *tools)
+void    philo_monitor(t_box *tools, t_philo *philo)
 {
-    pthread_mutex_lock(&tools->monitor_mutex);
-    if (tools->monitor == 0)
-        tools->monitor = 1;
-    pthread_mutex_unlock(&tools->monitor_mutex);
+
+}
+
+
+void    philo_free(t_box *tools)
+{
+    int i;
+
+    i = 0;
+    while (i < tools->total_num)
+        pthread_join(tools->philo[i++].thread_id, NULL);
+    i = 0;
+    while (i < tools->total_num)
+        pthread_mutex_destroy(&tools->fork[i++]);
+    free(tools->fork);
+    free(tools->philo);
+    pthread_mutex_destroy(&tools->write);
 }

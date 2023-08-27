@@ -36,35 +36,14 @@ int ft_atoi(char *str)
     return ((int)(sign * num));
 }
 
-int ft_error(char *str)
-{
-    printf("%s", str);
-    return (1);
-}
-
 void    thread_print(t_philo *thread, char *str)
 {
     t_box   *tools;
-    long    cur_time;
+    long    time_now;
 
     tools = thread->tools;
     pthread_mutex_lock(&tools->write);
-    cur_time = get_time() - tools->begin_time;
-    printf("%ld %d %s\n", cur_time, thread->id, str);
+    time_now = get_time() - tools->init_point;
+    printf("%ld %d %s\n", time_now, thread->id, str);
     pthread_mutex_unlock(&tools->write);
-}
-
-void    philo_free(t_box *tools)
-{
-    int i;
-
-    i = 0;
-    while (i < tools->philo_num)
-        pthread_join(tools->philo[i++].thread_id, NULL);
-    i = 0;
-    while (i < tools->philo_num)
-        pthread_mutex_destroy(&tools->fork[i++]);
-    free(tools->fork);
-    free(tools->philo);
-    pthread_mutex_destroy(&tools->write);
 }
