@@ -59,6 +59,7 @@ static int  set_philo(t_box *tools)
         tools->philo[i].left = i;
         tools->philo[i].right = (i + 1) % tools->philo_num;
         tools->philo[i].eat_count = 0;
+        tools->philo[i].last_eat = 0;
         tools->philo[i].tools = tools;
         i++;
     }

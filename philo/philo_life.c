@@ -10,21 +10,23 @@ long    get_time(void)
 
 int check_died(t_box *tools)
 {
-    pthread_mutex_lock(&tools->monitor_mutex);
+    pthread_mutex_lock(&tools->monitor_check);
     if (tools->monitor == 1)
     {
-        pthread_mutex_unlock(&tools->monitor_mutex);
+        pthread_mutex_unlock(&tools->monitor_check);
         return (1);
     }
     else
     {
-        pthread_mutex_unlock(&tools->monitor_mutex);
+        pthread_mutex_unlock(&tools->monitor_check);
         return (0);
     }
 }
 
 void    change_monitor(t_box *tools)
 {
+    pthread_mutex_lock(&tools->monitor_mutex);
     if (tools->monitor == 0)
         tools->monitor = 1;
+    pthread_mutex_unlock(&tools->monitor_mutex);
 }

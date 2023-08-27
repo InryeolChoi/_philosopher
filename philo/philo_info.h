@@ -16,8 +16,8 @@ typedef struct  s_philo
     int             eat_count;
     int             left;
     int             right;
-    long            last_eat;
     long            begin_time;
+    long            last_eat;
     struct s_box    *tools;
     pthread_t       thread_id;
 }   t_philo;
@@ -36,6 +36,7 @@ typedef struct  s_box
     pthread_mutex_t eating;
     pthread_mutex_t write;
     pthread_mutex_t monitor_mutex;
+    pthread_mutex_t monitor_check;
 }   t_box;
 
 int     ft_atoi(char *str);
