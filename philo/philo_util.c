@@ -57,11 +57,13 @@ void    philo_free(t_box *tools)
 void    thread_print(t_philo *thread, char *str)
 {
     t_box   *tools;
+    long    cur_time;
 
     tools = thread->tools;
+    cur_time = get_time() - thread->begin_time;
     pthread_mutex_lock(&tools->write);
-    printf("%lld ", thread->clock);
+    printf("%ld ", cur_time);
     printf("%d ", thread->id);
-    printf("%s", str);
+    printf("%s\n", str);
     pthread_mutex_unlock(&tools->write);
 }

@@ -23,7 +23,7 @@ int thread_eat(t_philo *philo)
     return (0);
 }
 
-int thread_sleep(t_philo *philo)
+void    thread_sleep(t_philo *philo)
 {
     thread_print(philo, "is sleeping");
     philo->clock = get_time();
@@ -44,7 +44,7 @@ void    *threads_action(void *arg)
     {
         thread_eat(thread);
         thread_sleep(thread);
-        philo_print(thread, "is thinking");
+        thread_print(thread, "is thinking");
     }
     return (arg);
 }
@@ -57,11 +57,12 @@ int philo_execute(t_box *tools, t_philo *philo)
     i = 0;
     while (i < tools->philo_num)
     {
-        philo[i].clock = get_time();
+        philo[i].begin_time = get_time();
         select = (void *)&(philo[i]);
-        if (pthread_create(&(philo[i].thread_id), NULL, threads_action, select));
-            return (-1);
+        if (pthread_create(&(philo[i].thread_id), NULL, threads_action, select))
+            return (1);
         i++;
     }
     philo_free(tools);
+    return (0);
 }

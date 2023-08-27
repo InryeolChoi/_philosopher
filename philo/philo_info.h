@@ -16,7 +16,8 @@ typedef struct  s_philo
     int             left_fork;
     int             right_fork;
     int             eat_count;
-    long long       clock;
+    long            begin_time;
+    long            clock;
     struct s_box    *tools;
     pthread_t       thread_id;
 }   t_philo;
