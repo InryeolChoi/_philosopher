@@ -42,6 +42,18 @@ int ft_error(char *str)
     return (1);
 }
 
+void    thread_print(t_philo *thread, char *str)
+{
+    t_box   *tools;
+    long    cur_time;
+
+    tools = thread->tools;
+    pthread_mutex_lock(&tools->write);
+    cur_time = get_time() - tools->begin_time;
+    printf("%ld %d %s\n", cur_time, thread->id, str);
+    pthread_mutex_unlock(&tools->write);
+}
+
 void    philo_free(t_box *tools)
 {
     int i;
@@ -55,16 +67,4 @@ void    philo_free(t_box *tools)
     free(tools->fork);
     free(tools->philo);
     pthread_mutex_destroy(&tools->write);
-}
-
-void    thread_print(t_philo *thread, char *str)
-{
-    t_box   *tools;
-    long    cur_time;
-
-    tools = thread->tools;
-    pthread_mutex_lock(&tools->write);
-    cur_time = get_time() - tools->begin_time;
-    printf("%ld %d %s\n", cur_time, thread->id, str);
-    pthread_mutex_unlock(&tools->write);
 }

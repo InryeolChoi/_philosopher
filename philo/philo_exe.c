@@ -11,10 +11,11 @@ static int  thread_eat(t_philo *philo, t_box *tools)
     pthread_mutex_lock(&tools->eating);
     thread_print(philo, "is eating");
     (philo->eat_count)++;
-    eat_start = get_time();
+    philo->last_eat = get_time();
     pthread_mutex_unlock(&tools->eating);
     pthread_mutex_unlock(&tools->fork[philo->right]);
     pthread_mutex_unlock(&tools->fork[philo->left]);
+    eat_start = get_time();
     while (1)
     {
         if (get_time() - eat_start >= tools->eating_time)
@@ -40,7 +41,6 @@ static void    thread_sleep(t_philo *philo, t_box *tools)
             break ;
         usleep(10);
     }
-    thread_print(philo, "is thinking");
 }
 
 static void    *threads_action(void *arg)
@@ -53,11 +53,16 @@ static void    *threads_action(void *arg)
     tools = thread->tools;
     i = 0;
     if (thread->id % 2 == 0)
-        usleep(1000);
+        usleep(100);
     while (1)
     {
         thread_eat(thread, tools);
+        if (check_died(tools))
+            break ;
         thread_sleep(thread, tools);
+        if (check_died(tools))
+            break ;
+        thread_print(thread, "is thinking");
     }
     return (arg);
 }
@@ -67,16 +72,26 @@ void    philo_monitor(t_box *tools, t_philo *philo)
     int     i;
     long    cur_time;
 
-    i = 0;
-    while (i < tools->philo_num)
+    while (!check_died(tools))
     {
-        cur_time = get_time();
-        if (cur_time - philo[i].last_eat > tools->survival_time)
+        if (tools->eating_num != 0 && philo[i].eat_count == tools->eating_num)
         {
-            thread_print(&philo[i], "died");
+            change_monitor(tools);
             break ;
         }
-        i++;
+        i = 0;
+        while (i < tools->philo_num)
+        {
+            cur_time = get_time();
+            if (cur_time - philo[i].last_eat > tools->survival_time)
+            {
+                thread_print(&philo[i], "died");
+                change_monitor(philo->tools);
+                break ;
+            }
+            i++;
+        }
+        usleep(10);
     }
 }
 

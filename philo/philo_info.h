@@ -29,19 +29,23 @@ typedef struct  s_box
     int             eating_time;
     int             sleep_time;
     int             eating_num;
+    int             monitor;
     long            begin_time;
     t_philo         *philo;
     pthread_mutex_t *fork;
     pthread_mutex_t eating;
     pthread_mutex_t write;
+    pthread_mutex_t monitor_mutex;
 }   t_box;
-
 
 int     ft_atoi(char *str);
 int     ft_error(char *str);
+int     check_died(t_box *tools);
 void    philo_free(t_box *tools);
 int     philo_input(t_box *tools, int ac, char **av);
 int     philo_execute(t_box *tools, t_philo *philo);
+void    change_monitor(t_box *tools);
 void    thread_print(t_philo *thread, char *str);
 long    get_time(void);
+
 #endif
