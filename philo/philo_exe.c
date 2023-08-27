@@ -3,6 +3,7 @@
 static int  thread_eat(t_philo *philo, t_box *tools)
 {
     long    eat_start;
+    long    cur_time;
 
     pthread_mutex_lock(&tools->fork[philo->left]);
     thread_print(philo, "has taken a fork");
@@ -18,7 +19,8 @@ static int  thread_eat(t_philo *philo, t_box *tools)
     eat_start = get_time();
     while (1)
     {
-        if (get_time() - eat_start >= tools->eating_time)
+        cur_time = get_time();
+        if (cur_time - eat_start >= tools->eating_time)
             break;
         usleep(10);
     }
@@ -72,6 +74,7 @@ void    philo_monitor(t_box *tools, t_philo *philo)
     int     i;
     long    cur_time;
 
+    i = 0;
     while (!check_died(tools))
     {
         if (tools->eating_num != 0 && philo[i].eat_count == tools->eating_num)
@@ -79,7 +82,6 @@ void    philo_monitor(t_box *tools, t_philo *philo)
             change_monitor(tools);
             break ;
         }
-        i = 0;
         while (i < tools->philo_num)
         {
             cur_time = get_time();
