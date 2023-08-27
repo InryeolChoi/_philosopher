@@ -1,35 +1,49 @@
 #include "philo_info.h"
 
-int thread_eat(t_philo *philo)
+static int  thread_eat(t_philo *philo, t_box *tools)
 {
-    int     left;
-    int     right;
-    t_box   *tools;
+    long    eat_start;
 
-    tools = philo->tools;
-    left = philo->left_fork;
-    right = philo->right_fork;
-    pthread_mutex_lock(&tools->fork[left]);
+    pthread_mutex_lock(&tools->fork[philo->left]);
     thread_print(philo, "has taken a fork");
-    pthread_mutex_lock(&tools->fork[right]);
+    pthread_mutex_lock(&tools->fork[philo->right]);
     thread_print(philo, "has taken a fork");
     pthread_mutex_lock(&tools->eating);
     thread_print(philo, "is eating");
-    philo->clock = get_time();
-    philo->eat_count += 1;
+    (philo->eat_count)++;
+    eat_start = get_time();
     pthread_mutex_unlock(&tools->eating);
-    pthread_mutex_unlock(&tools->fork[right]);
-    pthread_mutex_unlock(&tools->fork[left]);
+    pthread_mutex_unlock(&tools->fork[philo->right]);
+    pthread_mutex_unlock(&tools->fork[philo->left]);
+    while (1)
+    {
+        if (get_time() - eat_start >= tools->eating_time)
+            break;
+        usleep(10);
+    }
     return (0);
 }
 
-void    thread_sleep(t_philo *philo)
+static void    thread_sleep(t_philo *philo, t_box *tools)
 {
+    long    sleep_time;
+    long    cur_time;
+    long    start_sleep;
+
+    sleep_time = tools->sleep_time;
+    start_sleep = get_time();
     thread_print(philo, "is sleeping");
-    philo->clock = get_time();
+    while (1)
+    {
+        cur_time = get_time();
+        if (cur_time - start_sleep >= sleep_time)
+            break ;
+        usleep(10);
+    }
+    thread_print(philo, "is thinking");
 }
 
-void    *threads_action(void *arg)
+static void    *threads_action(void *arg)
 {
     int     i;
     t_box   *tools;
@@ -39,14 +53,31 @@ void    *threads_action(void *arg)
     tools = thread->tools;
     i = 0;
     if (thread->id % 2 == 0)
-        usleep(100);
-    while (i < tools->philo_num)
+        usleep(1000);
+    while (1)
     {
-        thread_eat(thread);
-        thread_sleep(thread);
-        thread_print(thread, "is thinking");
+        thread_eat(thread, tools);
+        thread_sleep(thread, tools);
     }
     return (arg);
+}
+
+void    philo_monitor(t_box *tools, t_philo *philo)
+{
+    int     i;
+    long    cur_time;
+
+    i = 0;
+    while (i < tools->philo_num)
+    {
+        cur_time = get_time();
+        if (cur_time - philo[i].last_eat > tools->survival_time)
+        {
+            thread_print(&philo[i], "died");
+            break ;
+        }
+        i++;
+    }
 }
 
 int philo_execute(t_box *tools, t_philo *philo)
@@ -55,6 +86,7 @@ int philo_execute(t_box *tools, t_philo *philo)
     void    *select;
 
     i = 0;
+    tools->begin_time = get_time();
     while (i < tools->philo_num)
     {
         philo[i].begin_time = get_time();
@@ -63,6 +95,7 @@ int philo_execute(t_box *tools, t_philo *philo)
             return (1);
         i++;
     }
+    philo_monitor(tools, philo);
     philo_free(tools);
     return (0);
 }

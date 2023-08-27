@@ -13,11 +13,11 @@
 typedef struct  s_philo
 {
     int             id;
-    int             left_fork;
-    int             right_fork;
     int             eat_count;
+    int             left;
+    int             right;
+    long            last_eat;
     long            begin_time;
-    long            clock;
     struct s_box    *tools;
     pthread_t       thread_id;
 }   t_philo;
@@ -29,6 +29,7 @@ typedef struct  s_box
     int             eating_time;
     int             sleep_time;
     int             eating_num;
+    long            begin_time;
     t_philo         *philo;
     pthread_mutex_t *fork;
     pthread_mutex_t eating;
