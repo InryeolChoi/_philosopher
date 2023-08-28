@@ -1,8 +1,9 @@
 #include "philo_info.h"
 
-static int  take_fork(t_philo *philo, t_box *tools)
+static int  thread_fork(t_philo *philo, t_box *tools)
 {
     pthread_mutex_lock(&tools->fork[philo->left]);
+    printf("philo(%d) l_idx = %d, r_idx = %d\n", philo->id, philo->left, philo->right);
     thread_print(philo, "has taken a fork");
     if (check_died(tools))
     {
@@ -25,7 +26,7 @@ static int  thread_eat(t_philo *philo, t_box *tools)
     long    eat_start;
     long    cur_time;
 
-    if (take_fork(philo, tools))
+    if (thread_fork(philo, tools))
         return (1);
     pthread_mutex_lock(&tools->eating_mutex);
     thread_print(philo, "is eating");
@@ -74,7 +75,8 @@ static void    *threads_action(void *arg)
     i = 0;
     if (thread->id % 2 == 0)
         usleep(100);
-    while (1)
+        //usleep(tools->time_to_eat * 1000);
+    while (!check_died(tools))
     {
         if (thread_eat(thread, tools))
             break ;
@@ -104,6 +106,7 @@ int philo_execute(t_box *tools, t_philo *philo)
     while (i < tools->total_philo)
     {
         philo[i].philo_begin = get_time();
+        philo[i].last_eat = get_time();
         select = (void *)&(philo[i]);
         if (pthread_create(&(philo[i].thread_id), NULL, threads_action, select))
             return (1);

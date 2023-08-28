@@ -13,7 +13,7 @@
 typedef struct  s_philo
 {
     int             id;             // 철학자 id
-    int             eating_num;    // 철학자의 식사 횟수
+    int             eating_num;     // 철학자의 식사 횟수
     int             left;           // 왼쪽 포크
     int             right;          // 오른쪽 포크
     long            philo_begin;    // 철학자의 활동 시작 시간
@@ -35,6 +35,7 @@ typedef struct  s_box
     pthread_mutex_t *fork;          // 뮤택스 : 포크
     pthread_mutex_t eating_mutex;   // 뮤택스 : 먹기
     pthread_mutex_t print_mutex;    // 뮤택스 : 프린트
+    pthread_mutex_t flag_mutex;     // 뮤택스 : 사망여부
 }   t_box;
 
 int     ft_atoi(char *str);

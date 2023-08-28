@@ -21,6 +21,7 @@ static int  set_tools(t_box *tools, int ac, char **av)
     else
         tools->total_eat = -1;
     tools->init_point = 0;
+    tools->died_flag = 0;
     return (0);
 }
 
@@ -38,7 +39,7 @@ static int  set_mutex(t_box *tools)
     i = 0;
     while (i < tools->total_philo)
     {
-        if (pthread_mutex_init(&(tools->fork[i]), NULL))
+        if (pthread_mutex_init(&(tools->fork[i]), NULL) == -1)
             return (1);
         i++;
     }

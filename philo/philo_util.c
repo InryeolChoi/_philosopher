@@ -57,3 +57,15 @@ void    thread_print(t_philo *thread, char *str)
     printf("%ld %d %s\n", time_now, thread->id, str);
     pthread_mutex_unlock(&tools->print_mutex);
 }
+
+int check_died(t_box *tools)
+{
+    pthread_mutex_lock(&tools->flag_mutex);
+    if (tools->died_flag == 1)
+    {
+        pthread_mutex_unlock(&tools->flag_mutex);
+        return (1);
+    }
+    pthread_mutex_unlock(&tools->flag_mutex);
+    return (0);
+}
