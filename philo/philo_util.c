@@ -36,14 +36,24 @@ int ft_atoi(char *str)
     return ((int)(sign * num));
 }
 
+long    get_time(void)
+{
+    struct  timeval time;
+
+    gettimeofday(&time, NULL);
+    return ((time.tv_sec * 1000) + (time.tv_usec / 1000));
+}
+
 void    thread_print(t_philo *thread, char *str)
 {
     t_box   *tools;
+    long    cur_time;
     long    time_now;
 
     tools = thread->tools;
-    pthread_mutex_lock(&tools->write);
-    time_now = get_time() - tools->init_point;
+    pthread_mutex_lock(&tools->print_mutex);
+    cur_time = get_time();
+    time_now = cur_time - tools->init_point;
     printf("%ld %d %s\n", time_now, thread->id, str);
-    pthread_mutex_unlock(&tools->write);
+    pthread_mutex_unlock(&tools->print_mutex);
 }

@@ -1,19 +1,35 @@
 #include "philo_info.h"
 
+static int  take_fork(t_philo *philo, t_box *tools)
+{
+    pthread_mutex_lock(&tools->fork[philo->left]);
+    thread_print(philo, "has taken a fork");
+    if (check_died(tools))
+    {
+        pthread_mutex_unlock(&tools->fork[philo->left]);
+        return (1);
+    }
+    pthread_mutex_lock(&tools->fork[philo->right]);
+    thread_print(philo, "has taken a fork");
+    if (check_died(tools))
+    {
+        pthread_mutex_unlock(&tools->fork[philo->right]);
+        pthread_mutex_unlock(&tools->fork[philo->left]);
+        return (1);
+    }
+    return (0);
+}
+
 static int  thread_eat(t_philo *philo, t_box *tools)
 {
     long    eat_start;
     long    cur_time;
 
-    pthread_mutex_lock(&tools->fork[philo->left]);
-    thread_print(philo, "has taken a fork");
-    if (tools->total_num == 1)
-        return (one_philo(tools));
-    pthread_mutex_lock(&tools->fork[philo->right]);
-    thread_print(philo, "has taken a fork");
+    if (take_fork(philo, tools))
+        return (1);
     pthread_mutex_lock(&tools->eating_mutex);
     thread_print(philo, "is eating");
-    (philo->philo_eat)++;
+    philo->eating_num += 1;
     philo->last_eat = get_time();
     pthread_mutex_unlock(&tools->eating_mutex);
     pthread_mutex_unlock(&tools->fork[philo->right]);
@@ -22,7 +38,7 @@ static int  thread_eat(t_philo *philo, t_box *tools)
     while (1)
     {
         cur_time = get_time();
-        if (cur_time - eat_start >= tools->eating_time)
+        if (cur_time - eat_start >= tools->time_to_eat)
             break;
         usleep(10);
     }
@@ -31,17 +47,17 @@ static int  thread_eat(t_philo *philo, t_box *tools)
 
 static void    thread_sleep(t_philo *philo, t_box *tools)
 {
-    long    sleep_time;
+    long    time_to_sleep;
     long    cur_time;
     long    start_sleep;
 
-    sleep_time = tools->sleep_time;
+    time_to_sleep = tools->time_to_sleep;
     start_sleep = get_time();
     thread_print(philo, "is sleeping");
     while (1)
     {
         cur_time = get_time();
-        if (cur_time - start_sleep >= sleep_time)
+        if (cur_time - start_sleep >= time_to_sleep)
             break ;
         usleep(10);
     }
@@ -60,7 +76,8 @@ static void    *threads_action(void *arg)
         usleep(100);
     while (1)
     {
-        thread_eat(thread, tools);
+        if (thread_eat(thread, tools))
+            break ;
         if (check_died(tools))
             break ;
         thread_sleep(thread, tools);
@@ -78,7 +95,13 @@ int philo_execute(t_box *tools, t_philo *philo)
 
     i = 0;
     tools->init_point = get_time();
-    while (i < tools->total_num)
+    if (tools->total_philo == 1)
+    {
+        thread_print(philo, "has taken a fork");
+        thread_print(philo, "died");
+        return (0);
+    }
+    while (i < tools->total_philo)
     {
         philo[i].philo_begin = get_time();
         select = (void *)&(philo[i]);
