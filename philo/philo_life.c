@@ -1,12 +1,12 @@
 #include "philo_info.h"
 
-static void    double_lock(t_box *tools)
+static void    multiple_lock(t_box *tools)
 {
     pthread_mutex_lock(&tools->eating_mutex);
     pthread_mutex_lock(&tools->flag_mutex);
 }
 
-static void    double_unlock(t_box *tools)
+static void    multiple_unlock(t_box *tools)
 {
     pthread_mutex_unlock(&tools->flag_mutex);
     pthread_mutex_unlock(&tools->eating_mutex);
@@ -31,16 +31,16 @@ void    philo_monitor(t_box *tools, t_philo *philo)
         i = -1;
         while (++i < tools->total_philo)
         {
-            double_lock(tools);
-            if ((tools->total_eat != -1 && philo[i].eating_num >= tools->total_eat) || \
-                get_time() - philo[i].last_eat >= tools->time_to_die)
-                {
-                    tools->died_flag = 1;
-                    double_unlock(tools);
-                    died = i;
-                    break;
-                }
-            double_unlock(tools);
+            multiple_lock(tools);
+            if ((philo[i].eating_num >= tools->total_eat) || \
+                (get_time() - philo[i].last_eat >= tools->time_to_die))
+            {
+                tools->died_flag = 1;
+                multiple_unlock(tools);
+                died = i;
+                break;
+            }
+            multiple_unlock(tools);
         }
         if (died != -1)
             break ;

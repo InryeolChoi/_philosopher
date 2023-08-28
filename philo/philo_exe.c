@@ -3,7 +3,6 @@
 static int  thread_fork(t_philo *philo, t_box *tools)
 {
     pthread_mutex_lock(&tools->fork[philo->left]);
-    printf("philo(%d) l_idx = %d, r_idx = %d\n", philo->id, philo->left, philo->right);
     thread_print(philo, "has taken a fork");
     if (check_died(tools))
     {
@@ -74,8 +73,7 @@ static void    *threads_action(void *arg)
     tools = thread->tools;
     i = 0;
     if (thread->id % 2 == 0)
-        usleep(100);
-        //usleep(tools->time_to_eat * 1000);
+        usleep(tools->time_to_eat * 100);
     while (!check_died(tools))
     {
         if (thread_eat(thread, tools))

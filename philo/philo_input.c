@@ -19,7 +19,7 @@ static int  set_tools(t_box *tools, int ac, char **av)
             return (1);
     }
     else
-        tools->total_eat = -1;
+        tools->total_eat = INT_MAX;
     tools->init_point = 0;
     tools->died_flag = 0;
     return (0);
@@ -32,6 +32,8 @@ static int  set_mutex(t_box *tools)
     if (pthread_mutex_init(&(tools->eating_mutex), NULL))
         return (1);
     if (pthread_mutex_init(&(tools->print_mutex), NULL))
+        return (1);
+    if (pthread_mutex_init(&(tools->flag_mutex), NULL))
         return (1);
     tools->fork = malloc(sizeof(pthread_mutex_t) * tools->total_philo);
     if (!(tools->fork))

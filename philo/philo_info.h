@@ -8,6 +8,14 @@
 # include <unistd.h>
 # include <sys/time.h>
 
+// #define pthread_mutex_lock(x) \
+// pthread_mutex_lock(x);\
+// printf("lock %p. file:%s:%d\n", x, __FILE__, __LINE__)
+
+// #define pthread_mutex_unlock(x) \
+// printf("unlock %p. file:%s:%d\n", x, __FILE__, __LINE__);\
+// pthread_mutex_unlock(x)
+
 # define INT_MAX 2147483647
 
 typedef struct  s_philo
