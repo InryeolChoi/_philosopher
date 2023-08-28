@@ -73,7 +73,7 @@ static void    *threads_action(void *arg)
     tools = thread->tools;
     i = 0;
     if (thread->id % 2 == 0)
-        usleep(tools->time_to_eat * 100);
+        usleep(arg_usleep(tools));
     while (!check_died(tools))
     {
         if (thread_eat(thread, tools))
