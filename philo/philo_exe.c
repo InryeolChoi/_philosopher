@@ -65,13 +65,11 @@ static void    thread_sleep(t_philo *philo, t_box *tools)
 
 static void    *threads_action(void *arg)
 {
-    int     i;
     t_box   *tools;
     t_philo *thread;
 
     thread = (t_philo *)arg;
     tools = thread->tools;
-    i = 0;
     if (thread->id % 2 == 0)
         usleep(arg_usleep(tools));
     while (!check_died(tools))
@@ -98,6 +96,7 @@ int philo_execute(t_box *tools, t_philo *philo)
     if (tools->total_philo == 1)
     {
         thread_print(philo, "has taken a fork");
+        usleep(tools->time_to_die * 1000);
         thread_print(philo, "died");
         return (0);
     }
