@@ -21,6 +21,8 @@
 # include <sys/time.h>
 
 # define INT_MAX 2147483647
+# define LOCK 0
+# define UNLOCK 1
 
 typedef struct s_philo
 {

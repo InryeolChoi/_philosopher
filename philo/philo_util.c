@@ -55,3 +55,11 @@ long	get_time(void)
 	gettimeofday(&time, NULL);
 	return ((time.tv_sec * 1000) + (time.tv_usec / 1000));
 }
+
+int	arg_usleep(t_box *tools)
+{
+	if (tools->time_to_die < 2 * tools->time_to_eat)
+		return (tools->time_to_die * 500);
+	else
+		return (tools->time_to_eat * 100);
+}

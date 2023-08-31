@@ -31,9 +31,6 @@ static int  thread_eat(t_philo *philo, t_box *tools)
     thread_print(philo, "is eating");
     philo->eating_num += 1;
     philo->last_eat = get_time();
-    pthread_mutex_unlock(&tools->eating_mutex);
-    pthread_mutex_unlock(&tools->fork[philo->right]);
-    pthread_mutex_unlock(&tools->fork[philo->left]);
     eat_start = get_time();
     while (1)
     {
@@ -42,6 +39,9 @@ static int  thread_eat(t_philo *philo, t_box *tools)
             break;
         usleep(10);
     }
+    pthread_mutex_unlock(&tools->eating_mutex);
+    pthread_mutex_unlock(&tools->fork[philo->right]);
+    pthread_mutex_unlock(&tools->fork[philo->left]);
     return (0);
 }
 
@@ -82,6 +82,7 @@ static void    *threads_action(void *arg)
         if (check_died(tools))
             break ;
         thread_print(thread, "is thinking");
+        usleep(10);
     }
     return (arg);
 }

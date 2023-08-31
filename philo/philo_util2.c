@@ -12,36 +12,31 @@
 
 #include "philo_info.h"
 
-void	thread_print(t_philo *thread, char *str)
+void	single_free(t_box *tools)
 {
-	t_box	*tools;
-	long	cur_time;
-	long	time_now;
+	int	i;
 
-	tools = thread->tools;
-	pthread_mutex_lock(&tools->print_mutex);
-	cur_time = get_time();
-	time_now = cur_time - tools->init_point;
-	printf("%ld %d %s\n", time_now, thread->id, str);
-	pthread_mutex_unlock(&tools->print_mutex);
+	i = 0;
+	while (i < tools->total_philo)
+		pthread_mutex_destroy(&tools->fork[i++]);
+	free(tools->fork);
+	free(tools->philo);
+	pthread_mutex_destroy(&tools->print_mutex);
+	pthread_mutex_destroy(&tools->eating_mutex);
 }
 
-int	check_died(t_box *tools)
+void	philo_free(t_box *tools)
 {
-	pthread_mutex_lock(&tools->flag_mutex);
-	if (tools->died_flag == 1)
-	{
-		pthread_mutex_unlock(&tools->flag_mutex);
-		return (1);
-	}
-	pthread_mutex_unlock(&tools->flag_mutex);
-	return (0);
-}
+	int	i;
 
-int	arg_usleep(t_box *tools)
-{
-	if (tools->time_to_die < 2 * tools->time_to_eat)
-		return (tools->time_to_die * 500);
-	else
-		return (tools->time_to_eat * 100);
+	i = 0;
+	while (i < tools->total_philo)
+		pthread_join(tools->philo[i++].thread_id, NULL);
+	i = 0;
+	while (i < tools->total_philo)
+		pthread_mutex_destroy(&tools->fork[i++]);
+	free(tools->fork);
+	free(tools->philo);
+	pthread_mutex_destroy(&tools->print_mutex);
+	pthread_mutex_destroy(&tools->eating_mutex);
 }
