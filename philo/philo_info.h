@@ -46,20 +46,23 @@ typedef struct s_box
 	int				total_eat;
 	long			init_point;
 	int				died_flag;
-	pthread_mutex_t	*fork;
+	int				*fork;
+	pthread_mutex_t	*fork_mutex;
 	pthread_mutex_t	eating_mutex;
 	pthread_mutex_t	print_mutex;
-	pthread_mutex_t	flag_mutex;
+	pthread_mutex_t	died_flag_mutex;
+	pthread_mutex_t	start_mutex;
 }	t_box;
 
 int		ft_atoi(char *str);
 long	get_time(void);
 int		arg_usleep(t_box *tools);
-void	thread_print(t_philo *thread, char *str);
 int		philo_input(t_box *tools, int ac, char **av);
+int		philo_single(t_box *tools, t_philo *philo);
 int		philo_execute(t_box *tools, t_philo *philo);
-int		check_died(t_box *tools);
+int		philo_print(t_philo *thread, char *str);
 void	philo_monitor(t_box *tools, t_philo *philo);
+int		philo_check(t_box *tools);
 void	philo_free(t_box *tools);
 
 #endif

@@ -45,15 +45,17 @@ static int	set_mutex(t_box *tools)
 		return (1);
 	if (pthread_mutex_init(&(tools->print_mutex), NULL))
 		return (1);
-	if (pthread_mutex_init(&(tools->flag_mutex), NULL))
+	if (pthread_mutex_init(&(tools->died_flag_mutex), NULL))
 		return (1);
-	tools->fork = malloc(sizeof(pthread_mutex_t) * tools->total_philo);
-	if (!(tools->fork))
+	if (pthread_mutex_init(&(tools->start_mutex), NULL))
+		return (1);
+	tools->fork_mutex = malloc(sizeof(pthread_mutex_t) * tools->total_philo);
+	if (!(tools->fork_mutex))
 		return (1);
 	i = 0;
 	while (i < tools->total_philo)
 	{
-		if (pthread_mutex_init(&(tools->fork[i]), NULL) == -1)
+		if (pthread_mutex_init(&(tools->fork_mutex[i]), NULL) == -1)
 			return (1);
 		i++;
 	}
@@ -67,10 +69,14 @@ static int	set_philo(t_box *tools)
 	tools->philo = malloc(sizeof(t_philo) * tools->total_philo);
 	if (!tools->philo)
 		return (1);
+	tools->fork = malloc(sizeof(int) * tools->total_philo);
+	if (!tools->fork)
+		return (1);
 	i = 0;
 	while (i < tools->total_philo)
 	{
-		tools->philo[i].id = i;
+		tools->fork[i] = 0;
+		tools->philo[i].id = i + 1;
 		tools->philo[i].left = i;
 		tools->philo[i].right = (i + 1) % tools->total_philo;
 		tools->philo[i].eating_num = 0;

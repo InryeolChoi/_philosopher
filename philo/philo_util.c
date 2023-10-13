@@ -5,61 +5,71 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: inchoi <inchoi@student.42Seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/28 19:33:03 by inchoi            #+#    #+#             */
-/*   Updated: 2023/08/28 19:38:16 by inchoi           ###   ########.fr       */
+/*   Created: 2023/08/28 19:38:25 by inchoi            #+#    #+#             */
+/*   Updated: 2023/08/28 19:39:27 by inchoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_info.h"
 
-static int	figure_long(int sign)
+int	philo_print(t_philo *thread, char *str)
 {
-	if (sign == 1)
-		return (-1);
-	else
-		return (0);
+	t_box	*tools;
+	long	cur_time;
+	long	time_now;
+
+	tools = thread->tools;
+	pthread_mutex_lock(&tools->died_flag_mutex);
+	pthread_mutex_lock(&tools->print_mutex);
+	cur_time = get_time();
+	time_now = cur_time - tools->init_point;
+	if (tools->died_flag == 0)
+		printf("%ld %d %s\n", time_now, thread->id, str);
+	pthread_mutex_unlock(&tools->print_mutex);
+	pthread_mutex_unlock(&tools->died_flag_mutex);
+	return (0);
 }
 
-int	ft_atoi(char *str)
+int	philo_single(t_box *tools, t_philo *thread)
 {
 	int		i;
-	int		sign;
-	long	num;
+	long	cur_time;
+	long	time_now;
+
+	cur_time = get_time();
+	time_now = cur_time - tools->init_point;
+	printf("%ld %d has taken a fork\n", time_now, thread->id);
+	usleep(tools->time_to_die * 1000);
+	time_now = get_time() - tools->init_point;
+	printf("%ld %d died", time_now, thread->id);
+	i = 0;
+	while (i < tools->total_philo)
+		pthread_mutex_destroy(&tools->fork_mutex[i++]);
+	free(tools->fork_mutex);
+	free(tools->fork);
+	free(tools->philo);
+	pthread_mutex_destroy(&tools->print_mutex);
+	pthread_mutex_destroy(&tools->eating_mutex);
+	pthread_mutex_destroy(&tools->died_flag_mutex);
+	pthread_mutex_destroy(&tools->start_mutex);
+	return (0);
+}
+
+void	philo_free(t_box *tools)
+{
+	int	i;
 
 	i = 0;
-	sign = 1;
-	num = 0;
-	while (str[i] >= 9 && str[i] <= 13)
-		i++;
-	if (str[i] == '-' || str[i] == '+')
-	{
-		if (str[i] == '-')
-			sign = -1;
-		i++;
-	}
-	while (str[i] && str[i] >= '0' && str[i] <= '9')
-	{
-		if (num >= 922337203685477580 || \
-				(num == 922337203685477580 - 1 && num % 10 > 7))
-			return (figure_long(sign));
-		num = (num * 10 + str[i] - '0');
-		i++;
-	}
-	return ((int)(sign * num));
-}
-
-long	get_time(void)
-{
-	struct timeval	time;
-
-	gettimeofday(&time, NULL);
-	return ((time.tv_sec * 1000) + (time.tv_usec / 1000));
-}
-
-int	arg_usleep(t_box *tools)
-{
-	if (tools->time_to_die < 2 * tools->time_to_eat)
-		return (tools->time_to_die * 500);
-	else
-		return (tools->time_to_eat * 100);
+	while (i < tools->total_philo)
+		pthread_join(tools->philo[i++].thread_id, NULL);
+	i = 0;
+	while (i < tools->total_philo)
+		pthread_mutex_destroy(&tools->fork_mutex[i++]);
+	free(tools->fork_mutex);
+	free(tools->fork);
+	free(tools->philo);
+	pthread_mutex_destroy(&tools->print_mutex);
+	pthread_mutex_destroy(&tools->eating_mutex);
+	pthread_mutex_destroy(&tools->died_flag_mutex);
+	pthread_mutex_destroy(&tools->start_mutex);
 }
