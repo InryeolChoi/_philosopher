@@ -1,8 +1,10 @@
-NAME = philo
-CC = cc -g -Wall -Wextra -Werror # -fsanitize=thread
+NAME = philo_bonus
+CC = cc -g -Wall -Wextra -Werror
 
-SRCS = philo_main.c philo_exe.c philo_check.c \
-		philo_input.c util_function.c util_others.c
+SRCS = philo_bonus_main.c philo_bonus_input.c \
+		philo_bonus_exe.c philo_bonus_func.c \
+		philo_bonus_util.c
+
 OBJS = $(SRCS:.c=.o)
 
 all : $(NAME)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_main.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: inchoi <inchoi@student.42Seoul.kr>         +#+  +:+       +#+        */
+/*   By: inchoi <inchoi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 19:39:50 by inchoi            #+#    #+#             */
-/*   Updated: 2023/08/28 19:41:22 by inchoi           ###   ########.fr       */
+/*   Updated: 2023/10/31 15:32:45 by inchoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,6 @@ int	main(int ac, char **av)
 	if (philo_input(&tools, ac, av))
 		return (ft_error("wrong inputs"));
 	if (philo_execute(&tools, (&tools)->philo))
-		return (ft_error("wrong inputs"));
+		return (ft_error("malfunction"));
 	return (0);
 }
