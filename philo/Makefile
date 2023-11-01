@@ -2,7 +2,7 @@ NAME = philo
 CC = cc -g -Wall -Wextra -Werror # -fsanitize=thread
 
 SRCS = philo_main.c philo_exe.c philo_check.c \
-		philo_input.c util_function.c util_others.c
+		philo_input.c util_func.c util_other.c
 OBJS = $(SRCS:.c=.o)
 
 all : $(NAME)

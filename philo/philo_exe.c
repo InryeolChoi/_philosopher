@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_exe.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: inchoi <inchoi@student.42Seoul.kr>         +#+  +:+       +#+        */
+/*   By: inchoi <inchoi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 20:56:44 by inchoi            #+#    #+#             */
-/*   Updated: 2023/08/28 21:02:04 by inchoi           ###   ########.fr       */
+/*   Updated: 2023/11/01 19:26:34 by inchoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,13 +84,11 @@ static void	thread_sleep(t_philo *philo, t_box *tools)
 
 static void	*threads_action(void *arg)
 {
-	int		i;
 	t_box	*tools;
 	t_philo	*thread;
 
 	thread = (t_philo *)arg;
 	tools = thread->tools;
-	i = 0;
 	pthread_mutex_lock(&tools->start_mutex);
 	pthread_mutex_unlock(&tools->start_mutex);
 	if (thread->id % 2 == 0)
