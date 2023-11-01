@@ -6,7 +6,7 @@
 /*   By: inchoi <inchoi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 15:31:00 by inchoi            #+#    #+#             */
-/*   Updated: 2023/10/31 20:12:57 by inchoi           ###   ########.fr       */
+/*   Updated: 2023/11/01 18:52:25 by inchoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <sys/time.h>
+# include <sys/wait.h>
 # include <semaphore.h>
 # include <fcntl.h>
 # include <signal.h>
@@ -51,7 +52,6 @@ typedef struct	s_box
 // util & input
 int		ft_error(char *str);
 int		ft_atoi(char *str);
-int		bonus_input(t_box *tools, int ac, char **av);
 long	get_time(void);
 
 // exe & child

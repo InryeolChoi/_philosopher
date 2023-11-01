@@ -33,7 +33,7 @@ void	philo_sleep(t_box *tools)
 	long	start_sleep;
 
 	start_sleep = get_time();
-	philo_print(tools, tools->philo_id, "is thinking");
+	philo_print(tools, tools->philo_id, "is sleeping");
 	while (1)
 	{
 		cur_time = get_time();

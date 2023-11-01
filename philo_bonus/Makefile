@@ -1,10 +1,8 @@
 NAME = philo_bonus
 CC = cc -g -Wall -Wextra -Werror
 
-SRCS = philo_bonus_main.c philo_bonus_input.c \
-		philo_bonus_exe.c philo_bonus_func.c \
-		philo_bonus_util.c
-
+SRCS = philo_bonus_main.c philo_bonus_util.c \
+		philo_bonus_exe.c philo_bonus_func.c
 OBJS = $(SRCS:.c=.o)
 
 all : $(NAME)
