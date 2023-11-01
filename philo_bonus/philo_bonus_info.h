@@ -6,7 +6,7 @@
 /*   By: inchoi <inchoi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 15:31:00 by inchoi            #+#    #+#             */
-/*   Updated: 2023/11/01 18:52:25 by inchoi           ###   ########.fr       */
+/*   Updated: 2023/11/01 19:07:24 by inchoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ long	get_time(void);
 // exe & child
 int 	philo_execute(t_box	*tools);
 int		philo_parent(t_box *tools);
+int		philo_free(t_box *tools);
 void	philo_child(t_box *tools);
 void	*monitor_thread(void	*arg);
 

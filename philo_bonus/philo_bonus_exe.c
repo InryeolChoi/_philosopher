@@ -16,25 +16,22 @@ int philo_execute(t_box	*tools)
 			philo_child(tools);
 		}
 		else if (tools->pid_box[i] == -1)
-		{
-			perror("malloc error");
-			exit(1);
-		}
-		printf("%d\n", i);
-		i++;
+			return (1);
+		else
+			i++;
 	}
 	return (philo_parent(tools));
 }
 
 int	philo_parent(t_box *tools)
 {
+	int	i;
 	int	philo;
 	int status;
 
-	while (1)
+	while (i < tools->total_philo)
 	{
 		waitpid(-1, &status, 0);
-		printf("returned status : %d\n", status);
 		if (status != 0)
 		{
 			philo = 0;
@@ -44,7 +41,13 @@ int	philo_parent(t_box *tools)
 				philo++;
 			}
 		}
+		i++;
 	}
+	return (philo_free(tools));
+}
+
+int	philo_free(t_box *tools)
+{
 	sem_close(tools->print);
 	sem_close(tools->fork);
 	sem_close(tools->died);

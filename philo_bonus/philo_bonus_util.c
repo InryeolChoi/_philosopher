@@ -8,6 +8,7 @@ int	ft_error(char *str)
 		str++;
 	}
 	write(2, "\n", 1);
+	exit(1);
 	return (1);
 }
 
