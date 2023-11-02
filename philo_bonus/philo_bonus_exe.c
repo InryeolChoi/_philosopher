@@ -29,6 +29,7 @@ int	philo_parent(t_box *tools)
 	int	philo;
 	int status;
 
+	i = 0;
 	while (i < tools->total_philo)
 	{
 		waitpid(-1, &status, 0);
