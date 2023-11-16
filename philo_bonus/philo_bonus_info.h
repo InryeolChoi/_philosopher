@@ -6,7 +6,7 @@
 /*   By: inchoi <inchoi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 15:31:00 by inchoi            #+#    #+#             */
-/*   Updated: 2023/11/01 19:07:24 by inchoi           ###   ########.fr       */
+/*   Updated: 2023/11/08 19:52:47 by inchoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,45 +26,50 @@
 
 # define INT_MAX 2147483647
 
-typedef struct	s_box
+typedef struct s_box
 {
-	// parameter
 	int			total_philo;
 	int			time_to_die;
 	int			time_to_eat;
 	int			time_to_sleep;
 	int			total_eat;
-
-	// 필요한 도구
-	int			*pid_box; // (malloc)
-	int			philo_id; // 몇번째 철학자인지
-	int			eat_count; // 철학자가 먹은 횟수
-	long		init_point; // 시작 시간
-	pthread_t	monitor_thread; // 모니터링 쓰레드
-
-	// 세마포어
-	sem_t	*fork;
-	sem_t	*print;
-	sem_t	*died;
-
+	int			*pid_box;
+	int			philo_id;
+	int			eat_count;
+	long		init_point;
+	long		last_eat;
+	pthread_t	monitor_thread;
+	sem_t		*fork;
+	sem_t		*print;
+	sem_t		*died;
+	sem_t		*lasteat_sem;
+	sem_t		*eatcnt_sem;
+	char		*semname_died;
+	char		*semname_lasteat;
+	char		*semname_eatcnt;
 }	t_box;
 
 // util & input
 int		ft_error(char *str);
 int		ft_atoi(char *str);
+char	*ft_itoa(int n);
 long	get_time(void);
+size_t	ft_strlen(const char *str);
+char	*ft_strjoin(char const *s1, char const *s2);
 
 // exe & child
-int 	philo_execute(t_box	*tools);
-int		philo_parent(t_box *tools);
-int		philo_free(t_box *tools);
+int		philo_execute(t_box	*tools);
+int		philo_single(t_box *tools);
 void	philo_child(t_box *tools);
-void	*monitor_thread(void	*arg);
-
+void	*monitor_thread(void *arg);
+void	monitor_thread_time(t_box *tools);
+void	monitor_thread_eatcnt(t_box *tools);
+int		philo_parent(t_box *tools);
+int		philo_kill(t_box *tools, int exit_code);
+int		philo_free(t_box *tools);
 void	philo_grep_fork(t_box *tools);
 void	philo_eat_food(t_box *tools);
 void	philo_sleep(t_box *tools);
 int		philo_print(t_box *tools, int philo_id, char *str);
-
 
 #endif

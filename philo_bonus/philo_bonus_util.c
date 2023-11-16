@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philo_bonus_util.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: inchoi <inchoi@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/06 12:44:27 by inchoi            #+#    #+#             */
+/*   Updated: 2023/11/06 14:58:48 by inchoi           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo_bonus_info.h"
 
 int	ft_error(char *str)
@@ -18,6 +30,27 @@ static int	figure_long(int sign)
 		return (-1);
 	else
 		return (0);
+}
+
+size_t	ft_strlen(const char *str)
+{
+	size_t	count;
+
+	count = 0;
+	while (*str != '\0')
+	{
+		count++;
+		str++;
+	}
+	return (count);
+}
+
+long	get_time(void)
+{
+	struct timeval	time;
+
+	gettimeofday(&time, NULL);
+	return ((time.tv_sec * 1000) + (time.tv_usec / 1000));
 }
 
 int	ft_atoi(char *str)
@@ -46,12 +79,4 @@ int	ft_atoi(char *str)
 		i++;
 	}
 	return ((int)(sign * num));
-}
-
-long	get_time(void)
-{
-	struct timeval	time;
-
-	gettimeofday(&time, NULL);
-	return ((time.tv_sec * 1000) + (time.tv_usec / 1000));
 }

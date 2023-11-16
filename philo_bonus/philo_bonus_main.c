@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philo_bonus_main.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: inchoi <inchoi@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/06 12:44:02 by inchoi            #+#    #+#             */
+/*   Updated: 2023/11/08 17:07:24 by inchoi           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo_bonus_info.h"
 
 static int	check_av(int ac, char **av)
@@ -47,14 +59,11 @@ static int	set_tools(t_box *tools, int ac, char **av)
 
 static int	set_semaphore(t_box *tools)
 {
-	unlink("sem_fork");
-	unlink("sem_print");
-	unlink("sem_died");
+	sem_unlink("sem_fork");
+	sem_unlink("sem_print");
 	tools->fork = sem_open("sem_fork", O_CREAT, 0644, tools->total_philo);
 	tools->print = sem_open("sem_print", O_CREAT, 0644, 1);
-	tools->died = sem_open("sem_died", O_CREAT, 0644, 1);
-	if (tools->fork == SEM_FAILED || tools->print == SEM_FAILED || \
-		tools->died == SEM_FAILED)
+	if (tools->fork == SEM_FAILED || tools->print == SEM_FAILED)
 		return (1);
 	return (0);
 }
@@ -71,7 +80,7 @@ static int	bonus_input(t_box *tools, int ac, char **av)
 	return (0);
 }
 
-int main(int ac, char **av)
+int	main(int ac, char **av)
 {
 	t_box	tools;
 
@@ -81,5 +90,10 @@ int main(int ac, char **av)
 		return (ft_error("wrong input"));
 	if (philo_execute(&tools))
 		return (ft_error("malfunction"));
+	sem_close(tools.print);
+	sem_close(tools.fork);
+	sem_unlink("sem_print");
+	sem_unlink("sem_fork");
+	free(tools.pid_box);
 	return (0);
 }

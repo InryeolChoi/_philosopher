@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philo_bonus_func.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: inchoi <inchoi@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/06 12:44:33 by inchoi            #+#    #+#             */
+/*   Updated: 2023/11/08 19:04:20 by inchoi           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo_bonus_info.h"
 
 void	philo_grep_fork(t_box *tools)
@@ -14,13 +26,18 @@ void	philo_eat_food(t_box *tools)
 	long	eat_start;
 
 	philo_print(tools, tools->philo_id, "is eating");
+	sem_wait(tools->eatcnt_sem);
 	tools->eat_count++;
+	sem_post(tools->eatcnt_sem);
 	eat_start = get_time();
+	sem_wait(tools->lasteat_sem);
+	tools->last_eat = get_time();
+	sem_post(tools->lasteat_sem);
 	while (1)
 	{
 		cur_time = get_time();
 		if (cur_time - eat_start >= tools->time_to_eat)
-			break;
+			break ;
 		usleep(100);
 	}
 	sem_post(tools->fork);
@@ -39,7 +56,7 @@ void	philo_sleep(t_box *tools)
 		cur_time = get_time();
 		if (cur_time - start_sleep >= tools->time_to_sleep)
 			break ;
-		usleep(1000);
+		usleep(100);
 	}
 	philo_print(tools, tools->philo_id, "is thinking");
 }
@@ -55,6 +72,8 @@ int	philo_print(t_box *tools, int philo_id, char *str)
 	printf("%ld ", time_now);
 	printf("%d ", philo_id);
 	printf("%s\n", str);
+	if (ft_strlen(str) == 4)
+		return (0);
 	sem_post(tools->print);
 	return (0);
 }
