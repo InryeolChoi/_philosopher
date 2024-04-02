@@ -28,10 +28,10 @@ pthread_mutex_unlock
 * It's essential to manage philosophers so they don't starve to death.
 
 ## Key Concepts
-* Multithreading: (Link)[https://en.wikipedia.org/wiki/Multithreading_(computer_architecture)]
-* Multiprocessing: (Link)[https://en.wikipedia.org/wiki/Multiprocessing]
-* Concurrency: (Link)[https://en.wikipedia.org/wiki/Concurrency_(computer_science)]
-* Mutexes & Semaphores: (Link)[https://en.wikipedia.org/wiki/Lock_(computer_science)#Mutexes_vs._semaphores]
+* Multithreading: [Link](https://en.wikipedia.org/wiki/Multithreading_(computer_architecture))
+* Multiprocessing: [Link](https://en.wikipedia.org/wiki/Multiprocessing)
+* Concurrency: [Link](https://en.wikipedia.org/wiki/Concurrency_(computer_science))
+* Mutexes & Semaphores: [Link](https://en.wikipedia.org/wiki/Lock_(computer_science)#Mutexes_vs._semaphores)
 
 ## How to Run
 1. Compile: Use the Makefile to compile the program.

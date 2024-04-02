@@ -23,10 +23,10 @@ pthread_mutex_unlock
 * 철학자들이 굶어 죽지 않도록 관리해야 합니다.
 
 ## 주요 개념 
-* 멀티쓰레드 : (참고링크)[https://en.wikipedia.org/wiki/Multithreading_(computer_architecture)]
-* 멀티프로세스 : (참고링크)[https://en.wikipedia.org/wiki/Multiprocessing]
-* 동시성 문제 : (참고링크)[https://en.wikipedia.org/wiki/Concurrency_(computer_science)]
-* 뮤택스 & 세마포어 : (참고링크)[https://en.wikipedia.org/wiki/Lock_(computer_science)#Mutexes_vs._semaphores]
+* 멀티쓰레드 : [참고링크](https://en.wikipedia.org/wiki/Multithreading_(computer_architecture))
+* 멀티프로세스 : [참고링크](https://en.wikipedia.org/wiki/Multiprocessing)
+* 동시성 문제 : [참고링크](https://en.wikipedia.org/wiki/Concurrency_(computer_science))
+* 뮤택스 & 세마포어 : [참고링크](https://en.wikipedia.org/wiki/Lock_(computer_science)#Mutexes_vs._semaphores)
 
 ## 실행 방법
 1. 컴파일: Makefile을 사용하여 프로그램을 컴파일.
